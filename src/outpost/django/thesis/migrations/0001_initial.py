@@ -9,10 +9,10 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     forward = [
-        '''
+        """
         CREATE SCHEMA IF NOT EXISTS thesis;
-        ''',
-        '''
+        """,
+        """
         CREATE FOREIGN TABLE "thesis"."doctoralschools" (
             id integer,
             name varchar,
@@ -22,8 +22,10 @@ class Migration(migrations.Migration):
             tablename 'doctoralschools',
             db_url '{}'
         );
-        '''.format(settings.MULTICORN.get('thesis')),
-        '''
+        """.format(
+            settings.MULTICORN.get("thesis")
+        ),
+        """
         CREATE FOREIGN TABLE "thesis"."disciplines" (
             id integer,
             name varchar,
@@ -34,8 +36,10 @@ class Migration(migrations.Migration):
             tablename 'disciplines',
             db_url '{}'
         );
-        '''.format(settings.MULTICORN.get('thesis')),
-        '''
+        """.format(
+            settings.MULTICORN.get("thesis")
+        ),
+        """
         CREATE FOREIGN TABLE "thesis"."users_profile" (
             id integer,
             cn varchar,
@@ -46,8 +50,10 @@ class Migration(migrations.Migration):
             tablename 'users_profile',
             db_url '{}'
         );
-        '''.format(settings.MULTICORN.get('thesis')),
-        '''
+        """.format(
+            settings.MULTICORN.get("thesis")
+        ),
+        """
         CREATE FOREIGN TABLE "thesis"."thesis" (
             id int4,
             filename varchar,
@@ -75,8 +81,10 @@ class Migration(migrations.Migration):
             tablename 'thesis',
             db_url '{}'
         );
-        '''.format(settings.MULTICORN.get('thesis')),
-        '''
+        """.format(
+            settings.MULTICORN.get("thesis")
+        ),
+        """
         CREATE FOREIGN TABLE "thesis"."thesis_editors" (
             id int4,
             userid int4,
@@ -87,23 +95,25 @@ class Migration(migrations.Migration):
             tablename 'thesis_editors',
             db_url '{}'
         );
-        '''.format(settings.MULTICORN.get('thesis')),
-        '''
+        """.format(
+            settings.MULTICORN.get("thesis")
+        ),
+        """
         CREATE VIEW "public"."thesis_doctoralschool" AS SELECT
             id,
             name,
             string_to_array(speakeremail, ';') AS emails
         FROM "thesis"."doctoralschools";
-        ''',
-        '''
+        """,
+        """
         CREATE VIEW "public"."thesis_discipline" AS SELECT
             id,
             name,
             number,
             thesistype
         FROM "thesis"."disciplines";
-        ''',
-        '''
+        """,
+        """
         CREATE VIEW "public"."thesis_thesis" AS SELECT
             t.id AS id,
             t.created AS created,
@@ -138,8 +148,8 @@ class Migration(migrations.Migration):
             t.studentid = up.id AND
             up.matriculationnumber = s.stud_mnr AND
             t.locked = FALSE;
-        ''',
-        '''
+        """,
+        """
         CREATE VIEW "public"."thesis_editor" AS SELECT
             te.id,
             te.thesisid AS thesis_id,
@@ -150,46 +160,41 @@ class Migration(migrations.Migration):
         WHERE
             te.userid = up.id AND
             (up.persnr = '') IS NOT TRUE;
-        ''',
+        """,
     ]
     reverse = [
-        '''
+        """
         DROP VIEW IF EXISTS "public"."thesis_editor";
-        ''',
-        '''
+        """,
+        """
         DROP VIEW IF EXISTS "public"."thesis_thesis";
-        ''',
-        '''
+        """,
+        """
         DROP VIEW IF EXISTS "public"."thesis_discipline";
-        ''',
-        '''
+        """,
+        """
         DROP VIEW IF EXISTS "public"."thesis_doctoralschool";
-        ''',
-        '''
+        """,
+        """
         DROP FOREIGN TABLE IF EXISTS "thesis"."thesis_editors";
-        ''',
-        '''
+        """,
+        """
         DROP FOREIGN TABLE IF EXISTS "thesis"."thesis";
-        ''',
-        '''
+        """,
+        """
         DROP FOREIGN TABLE IF EXISTS "thesis"."users_profile";
-        ''',
-        '''
+        """,
+        """
         DROP FOREIGN TABLE IF EXISTS "thesis"."disciplines";
-        ''',
-        '''
+        """,
+        """
         DROP FOREIGN TABLE IF EXISTS "thesis"."doctoralschools";
-        ''',
+        """,
     ]
 
     dependencies = [
-        ('base', '0005_html_unescape'),
-        ('campusonline', '0036_distributionlist_union'),
+        ("base", "0005_html_unescape"),
+        ("campusonline", "0036_distributionlist_union"),
     ]
 
-    operations = [
-        migrations.RunSQL(
-            forward,
-            reverse
-        )
-    ]
+    operations = [migrations.RunSQL(forward, reverse)]
