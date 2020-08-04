@@ -1,4 +1,5 @@
 import logging
+import django
 
 from django.contrib.gis.db import models
 from django.contrib.postgres.fields import ArrayField
@@ -149,7 +150,9 @@ class Thesis(models.Model):
     class Meta:
         managed = False
         db_table = "thesis_thesis"
-        permissions = (("view_thesis", _("View thesis")),)
+        permissions = (
+            (("view_thesis", _("View thesis")),) if django.VERSION < (2, 1) else tuple()
+        )
 
     def __str__(self):
         return self.topic
